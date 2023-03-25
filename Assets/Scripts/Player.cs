@@ -8,6 +8,10 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float jumpForce, rotationFactor;
 
+    [SerializeField] private Transform deathParticle;
+
+    [SerializeField] private ParticleSystem jumpParticle;
+
     private Rigidbody2D rb;
 
     void Awake()
@@ -22,8 +26,19 @@ public class Player : MonoBehaviour
         HandleRotation();
     }
 
+    public void Die(Transform pipe)
+    {
+        Debug.Log("dead");
+
+        Instantiate(deathParticle, transform).parent = pipe;
+
+        Destroy(gameObject);
+    }
+
     private void Jump()
     {
+        jumpParticle.Play();
+
         rb.velocity = Vector2.zero;
 
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
